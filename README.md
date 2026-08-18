@@ -1,6 +1,6 @@
 # 🌐 idev-lib
 
-**idev-lib** là thư viện ý tưởng đề tài về **Mạng máy tính & Truyền thông dữ liệu** và các lĩnh vực kỹ thuật liên quan.
+**idev-lib** là thư viện ý tưởng đồ án về **Mạng máy tính & Truyền thông dữ liệu** và các lĩnh vực kỹ thuật liên quan.
 
 Các đề tài được phân loại theo nhóm chuyên môn, mức độ và hình thức triển khai để thuận tiện cho việc tham khảo, so sánh và lựa chọn hướng đồ án.
 
