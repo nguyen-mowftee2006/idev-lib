@@ -1,12 +1,14 @@
-# 🌐 NPI — Network Project Ideas
+# 🌐 idev-lib
 
-Kho tổng hợp và phân loại các đề tài thuộc lĩnh vực **Mạng máy tính & Truyền thông dữ liệu** và các lĩnh vực kỹ thuật liên quan.
+**idev-lib** là thư viện ý tưởng đề tài về **Mạng máy tính & Truyền thông dữ liệu** và các lĩnh vực kỹ thuật liên quan.
+
+Các đề tài được phân loại theo nhóm chuyên môn, mức độ và hình thức triển khai để thuận tiện cho việc tham khảo, so sánh và lựa chọn hướng đồ án.
 
 ## 📖 Giới thiệu
 
-**NPI** là viết tắt của **Network Project Ideas**. Repository này là kho đề tài được tổ chức theo lĩnh vực, bao phủ từ networking, security, system administration đến IoT, cloud, AI/ML, automation và DevOps.
+Repository bao phủ từ networking, security, system administration đến IoT, cloud, AI/ML, automation và DevOps.
 
-NPI được xây dựng nhằm:
+Repository được xây dựng nhằm:
 
 - Tổng hợp các hướng đề tài liên quan đến Mạng máy tính & Truyền thông dữ liệu.
 - Phân loại đề tài theo từng lĩnh vực kỹ thuật.
@@ -52,8 +54,6 @@ Hybrid
 
 > **Lưu ý:** Mức độ và loại triển khai mang tính định hướng; độ khó thực tế có thể thay đổi tùy theo phạm vi và mức độ mở rộng của từng đề tài.
 
-## 🧭 Cách sử dụng
+## 📝 Ghi chú
 
-- Chọn một trong 9 nhóm để bắt đầu từ lĩnh vực quan tâm.
-- Mở các file chủ đề bên trong từng nhóm để xem danh sách đề tài.
-- Sử dụng **Mức độ** và **Loại triển khai** để tham khảo độ khó, hướng thực hành và điều chỉnh phạm vi phù hợp.
+Các đề tài trong repo là hướng tham khảo ban đầu. Khi chọn một đề tài cụ thể, nên tiếp tục xác định rõ phạm vi, yêu cầu kỹ thuật, môi trường triển khai và tiêu chí đánh giá trước khi thực hiện.
