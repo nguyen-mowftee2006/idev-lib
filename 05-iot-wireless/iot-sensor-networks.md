@@ -8,10 +8,10 @@ Hệ thống IoT, mạng cảm biến và kết nối thiết bị thông minh.
 | ---: | --- | --- | --- |
 | 158 | Triển khai honeypot mạng nội bộ dùng Raspberry Pi | Khó | Phần cứng / IoT |
 | 159 | Mô hình giám sát chất lượng không khí trong nhà xưởng thông qua mạng IoT | Trung bình | Phần cứng / IoT |
-| 160 | Giám sát thiết bị IoT thông minh trong mạng nội bộ sử dụng IDS | Trung bình | Phần cứng / IoT |
+| 160 | Giám sát thiết bị IoT thông minh trong mạng nội bộ sử dụng IDS | Khó | Phần cứng / IoT |
 | 161 | Thiết kế firewall bảo vệ mạng IoT dùng Raspberry Pi | Trung bình | Phần cứng / IoT |
 | 162 | Hệ thống bảo vệ thiết bị IoT trong bệnh viện khỏi tấn công DDoS | Khó | Phần cứng / IoT |
-| 163 | Bảo vệ thiết bị IoT y tế (máy đo tim, máy truyền dịch thông minh) khỏi truy cập trái phép | Cơ bản | Phần cứng / IoT |
+| 163 | Bảo vệ thiết bị IoT y tế (máy đo tim, máy truyền dịch thông minh) khỏi truy cập trái phép | Trung bình | Phần cứng / IoT |
 | 164 | Xây dựng mạng IoT giám sát máy móc sản xuất trong doanh nghiệp vừa | Trung bình | Phần cứng / IoT |
 | 165 | Giải pháp IoT giám sát an toàn điện cho tòa nhà văn phòng tại TP.HCM | Trung bình | Phần cứng / IoT |
 | 166 | Mô hình mạng truyền dẫn dữ liệu cảm biến nông nghiệp từ xa | Trung bình | Phần cứng / IoT |

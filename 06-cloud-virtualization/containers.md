@@ -6,7 +6,7 @@ Docker, Kubernetes và điều phối container.
 
 | STT | Đề tài | Mức độ | Loại triển khai |
 | ---: | --- | --- | --- |
-| 206 | Ứng dụng Docker triển khai nhanh dịch vụ nội bộ cho doanh nghiệp | Khó | Cloud / Server |
+| 206 | Ứng dụng Docker triển khai nhanh dịch vụ nội bộ cho doanh nghiệp | Trung bình | Cloud / Server |
 | 207 | Xây dựng cloud server cho doanh nghiệp vừa và nhỏ bằng Docker Swarm | Trung bình | Cloud / Server |
 | 208 | Triển khai hệ thống mạng container (Kubernetes CNI plugin) | Khó | Cloud / Server |
 | 209 | Mạng điện toán cạnh Edge cluster với Kubernetes và CNI plugin tùy chỉnh | Khó | Cloud / Server |

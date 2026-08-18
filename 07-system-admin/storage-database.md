@@ -17,7 +17,7 @@ Lưu trữ, sao lưu, NAS và database server.
 | 252 | Xây dựng giải pháp backup dữ liệu tự động định kỳ cho bệnh viện sử dụng cloud | Trung bình | Cloud / Server |
 | 253 | Xây dựng hệ thống quản lý tệp tin nội bộ công ty bằng NextCloud | Trung bình | Cloud / Server |
 | 254 | Cấu hình hệ thống camera lưu trữ đám mây dùng Google Drive API | Cơ bản | Cloud / Server |
-| 255 | Triển khai hệ thống lưu trữ và chia sẻ tài liệu nội bộ cho công ty logistics | Khó | Cloud / Server |
+| 255 | Triển khai hệ thống lưu trữ và chia sẻ tài liệu nội bộ cho công ty logistics | Trung bình | Cloud / Server |
 | 256 | Tối ưu hệ thống Redis & PostgreSQL trên máy chủ dịch vụ cloud | Trung bình | Cloud / Server |
 | 257 | Tối ưu hóa hiệu suất cơ sở dữ liệu MySQL trên môi trường cloud | Trung bình | Cloud / Server |
 
