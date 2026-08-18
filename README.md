@@ -35,19 +35,27 @@ Mỗi file đề tài sử dụng bảng Markdown với các thông tin chính:
 
 | Thuộc tính | Ý nghĩa |
 | --- | --- |
-| **STT** | Số thứ tự dùng để định danh và sắp xếp đề tài trong kho |
+| **STT** | Số thứ tự toàn cục, liên tục từ `1` đến `296`, dùng để định danh và sắp xếp đề tài trong kho |
 | **Đề tài** | Tên hoặc hướng nghiên cứu chính của đề tài |
 | **Mức độ** | Độ khó tương đối: `Cơ bản`, `Trung bình`, `Khó` |
 | **Loại triển khai** | Hình thức hoặc môi trường triển khai phù hợp |
 
-Các giá trị `Loại triển khai` hiện dùng trong kho:
+`Mức độ` được đánh giá tương đối theo năng lực của **sinh viên năm cuối ngành Mạng máy tính & Truyền thông dữ liệu**:
+
+```text
+Cơ bản
+Trung bình
+Khó
+```
+
+Các giá trị `Loại triển khai` dùng trong kho:
 
 ```text
 Lab / Mô phỏng
-Phần mềm
-Phần cứng / IoT
-Cloud / Server
 Mạng thực nghiệm
+Phần mềm / Server
+Cloud / Virtualization
+Phần cứng / IoT
 AI / Dataset
 Hybrid
 ```

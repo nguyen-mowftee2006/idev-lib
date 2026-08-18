@@ -6,7 +6,7 @@ Tích hợp, kiểm thử và triển khai liên tục.
 
 | STT | Đề tài | Mức độ | Loại triển khai |
 | ---: | --- | --- | --- |
-| 271 | Thiết lập CI/CD pipeline trên nền tảng GitLab runner với cloud server | Trung bình | Phần mềm |
+| 271 | Thiết lập CI/CD pipeline trên nền tảng GitLab runner với cloud server | Trung bình | Phần mềm / Server |
 
 ---
 
