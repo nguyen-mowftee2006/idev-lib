@@ -40,14 +40,6 @@ Mỗi file đề tài sử dụng bảng Markdown với các thông tin chính:
 | **Mức độ** | Độ khó tương đối: `Cơ bản`, `Trung bình`, `Khó` |
 | **Loại triển khai** | Hình thức hoặc môi trường triển khai phù hợp |
 
-`Mức độ` được đánh giá tương đối theo năng lực của **sinh viên năm cuối ngành Mạng máy tính & Truyền thông dữ liệu**:
-
-```text
-Cơ bản
-Trung bình
-Khó
-```
-
 Các giá trị `Loại triển khai` dùng trong kho:
 
 ```text
