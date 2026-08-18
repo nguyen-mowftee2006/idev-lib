@@ -1,11 +1,13 @@
 # CI/CD
 
-Các đề tài về pipeline, triển khai tự động và vận hành dịch vụ liên tục.
+Tích hợp, kiểm thử và triển khai liên tục.
 
 ## Đề tài
 
-271. Thiết lập CI/CD pipeline trên nền tảng GitLab runner với cloud server
+| STT | Đề tài | Mức độ | Loại triển khai |
+| ---: | --- | --- | --- |
+| 271 | Thiết lập CI/CD pipeline trên nền tảng GitLab runner với cloud server | Trung bình | Phần mềm |
 
 ---
 
-[← Quay lại Automation & DevOps](./INDEX.md)
+[← Danh mục chính](../README.md)

@@ -1,12 +1,14 @@
 # Cloud Security
 
-Các đề tài bảo mật hạ tầng cloud, IAM, firewall, chống tấn công và mã hóa dữ liệu cloud.
+Bảo mật cloud, kiểm soát truy cập và an toàn hạ tầng đám mây.
 
 ## Đề tài
 
-210. Giám sát và bảo vệ API server khỏi tấn công DoS sử dụng Cloudflare
-211. Cài đặt phần mềm kế toán Fast/Bravo chạy trên cloud và tối ưu bảo mật
+| STT | Đề tài | Mức độ | Loại triển khai |
+| ---: | --- | --- | --- |
+| 210 | Giám sát và bảo vệ API server khỏi tấn công DoS sử dụng Cloudflare | Khó | Cloud / Server |
+| 211 | Cài đặt phần mềm kế toán Fast/Bravo chạy trên cloud và tối ưu bảo mật | Trung bình | Cloud / Server |
 
 ---
 
-[← Quay lại Cloud & Virtualization](./INDEX.md)
+[← Danh mục chính](../README.md)

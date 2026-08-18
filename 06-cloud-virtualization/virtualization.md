@@ -1,13 +1,15 @@
 # Virtualization
 
-Các đề tài về ảo hóa máy chủ, VPS, Proxmox, VMware và hạ tầng datacenter.
+Ảo hóa máy chủ, hypervisor, virtual machine và nền tảng ảo hóa.
 
 ## Đề tài
 
-197. Triển khai hệ thống ảo hóa máy chủ sử dụng VMware vSphere
-198. Cấu hình hạ tầng IaaS sử dụng Proxmox trên nền tảng server vật lý
-199. Giải pháp ảo hóa máy chủ tiết kiệm chi phí với Proxmox
+| STT | Đề tài | Mức độ | Loại triển khai |
+| ---: | --- | --- | --- |
+| 203 | Triển khai hệ thống ảo hóa máy chủ sử dụng VMware vSphere | Khó | Cloud / Server |
+| 204 | Cấu hình hạ tầng IaaS sử dụng Proxmox trên nền tảng server vật lý | Trung bình | Cloud / Server |
+| 205 | Giải pháp ảo hóa máy chủ tiết kiệm chi phí với Proxmox | Trung bình | Cloud / Server |
 
 ---
 
-[← Quay lại Cloud & Virtualization](./INDEX.md)
+[← Danh mục chính](../README.md)
