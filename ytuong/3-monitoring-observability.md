@@ -1,4 +1,4 @@
-# Nhóm 2: Giám sát & quan sát hệ thống
+# Ý tưởng 03: Giám sát & quan sát hệ thống
 ## Monitoring & Observability — Network + Service + Bandwidth + Power Actions
 
 **Gộp từ:** Network Monitoring + Service Uptime Monitor + Bandwidth Tracker + Wake-on-LAN Dashboard
@@ -21,7 +21,7 @@ Hệ thống trả lời các câu hỏi:
 - Có cần gửi cảnh báo cho Administrator không?
 - Có thể thực hiện một số hành động quản trị đơn giản như Wake-on-LAN không?
 
-Điểm cốt lõi của nhóm này là mô hình:
+Điểm cốt lõi của ý tưởng này là mô hình:
 
 ```text
 Target
@@ -35,7 +35,7 @@ Status
 Dashboard / Alert
 ```
 
-So với Nhóm 1, nhóm này không tập trung vào việc "mạng có những tài nguyên nào" mà tập trung vào câu hỏi:
+So với Ý tưởng 01, ý tưởng này không tập trung vào việc "mạng có những tài nguyên nào" mà tập trung vào câu hỏi:
 
 > **Những tài nguyên và dịch vụ đó hiện đang hoạt động như thế nào?**
 
@@ -107,7 +107,7 @@ Theo dõi:
 
 ## 4. Giá trị chính của đề tài
 
-Nhóm này có kiến trúc rất rõ:
+Ý tưởng này có kiến trúc rất rõ:
 
 ```text
 Scheduler
@@ -149,7 +149,7 @@ Bandwidth
 Observability
 ```
 
-Đây là ưu điểm lớn nhất của nhóm.
+Đây là ưu điểm lớn nhất của ý tưởng này.
 
 ---
 
@@ -368,7 +368,7 @@ Không cần Distributed Scheduler ở đồ án cơ sở.
 
 ## 11. Phạm vi đề xuất cho đồ án cơ sở ngành
 
-### Nhóm A — Core bắt buộc
+### Phần A — Core có thể cân nhắc
 
 - CRUD Target.
 - ICMP Monitoring.
@@ -385,7 +385,7 @@ Không cần Distributed Scheduler ở đồ án cơ sở.
 - Authentication Administrator.
 - Testing.
 
-### Nhóm B — Mở rộng nhẹ nếu còn thời gian
+### Phần B — Mở rộng nhẹ nếu còn thời gian
 
 - HTTP Response Time.
 - Basic Alert Telegram/Email.
@@ -394,7 +394,7 @@ Không cần Distributed Scheduler ở đồ án cơ sở.
 - Basic Service Availability.
 - Một chỉ số Traffic đơn giản.
 
-### Nhóm C — Không làm trong đồ án cơ sở
+### Phần C — Không làm trong đồ án cơ sở
 
 - Full Prometheus replacement.
 - Full Grafana replacement.
@@ -637,7 +637,7 @@ Alert
 Observability Platform
 ```
 
-Hoặc kết hợp với Nhóm 1:
+Hoặc kết hợp với Ý tưởng 01:
 
 ```text
 Inventory / IPAM
@@ -647,7 +647,7 @@ Monitoring
 Network Management System
 ```
 
-Do đó Nhóm 2 có khả năng hội tụ tự nhiên với Nhóm 1 nếu sau này muốn xây một NMS lớn.
+Do đó Ý tưởng 03 có khả năng hội tụ tự nhiên với Ý tưởng 01 nếu sau này muốn xây một NMS lớn.
 
 ---
 
@@ -717,6 +717,6 @@ Phát triển xa hơn
 SRE / DevOps Observability Stack
 ```
 
-Nhóm này có ưu điểm là **Scope đồ án cơ sở dễ kiểm soát hơn Nhóm 1**, nhưng vẫn có đường nâng cấp rất dài.
+Ý tưởng này có ưu điểm là **Scope đồ án cơ sở dễ kiểm soát hơn Ý tưởng 01**, nhưng vẫn có đường nâng cấp rất dài.
 
 Điểm quan trọng là không biến đồ án cơ sở thành một phiên bản Prometheus/Grafana tự viết. Phần cơ sở chỉ cần chứng minh hệ thống Monitoring có Scheduler, Worker, State và Dashboard hoạt động đúng; các phần Metrics/History/Alert nâng cao để dành cho đồ án chuyên ngành.

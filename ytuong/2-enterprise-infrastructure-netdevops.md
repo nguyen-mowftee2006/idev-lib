@@ -1,4 +1,4 @@
-# Nhóm 6: Mô phỏng hạ tầng doanh nghiệp & NetDevOps
+# Ý tưởng 02: Mô phỏng hạ tầng doanh nghiệp & NetDevOps
 ## Enterprise Infrastructure Lab → Network Automation / NetDevOps
 
 **Nguồn ý tưởng:** Mô phỏng hạ tầng doanh nghiệp, sau đó nâng cấp bằng Network Automation
@@ -118,7 +118,7 @@ Dùng để thực hành:
 
 ## 4. Giá trị chính của đề tài
 
-Khác với các nhóm xây ứng dụng chạy trên một mạng có sẵn, nhóm này tập trung vào **chính hạ tầng mạng**.
+Khác với các hướng xây ứng dụng chạy trên một mạng có sẵn, ý tưởng này tập trung vào **chính hạ tầng mạng**.
 
 Đồ án chứng minh hai lớp năng lực:
 
@@ -257,7 +257,7 @@ Mục đích là chứng minh khả năng phân đoạn mạng và kiểm soát 
 
 ## 8. Phạm vi đề xuất cho đồ án cơ sở ngành
 
-### Nhóm A — Core bắt buộc
+### Phần A — Core có thể cân nhắc
 
 - Thiết kế sơ đồ mạng doanh nghiệp nhỏ.
 - Lập IP Plan.
@@ -281,7 +281,7 @@ OSPF
 
 tùy quy mô Lab.
 
-### Nhóm B — Tăng chiều sâu nếu còn thời gian
+### Phần B — Tăng chiều sâu nếu còn thời gian
 
 - OSPF nếu Core đang dùng Static Routing.
 - Redundancy.
@@ -292,7 +292,7 @@ tùy quy mô Lab.
 - Một Playbook Automation nhỏ.
 - Dashboard trạng thái Lab.
 
-### Nhóm C — Chưa làm ở đồ án cơ sở
+### Phần C — Chưa làm ở đồ án cơ sở
 
 - Full SD-WAN.
 - BGP đa site phức tạp.
@@ -330,7 +330,7 @@ Demo:
 10. Chứng minh hệ thống vẫn hoạt động hoặc mô tả hành vi dự kiến.
 11. Nếu có Automation PoC: chạy một Playbook thay đổi cấu hình nhỏ trên nhiều thiết bị.
 
-Demo của nhóm này nên tập trung vào **luồng Packet và chính sách mạng**, không chỉ vào giao diện.
+Demo của ý tưởng này nên tập trung vào **luồng Packet và chính sách mạng**, không chỉ vào giao diện.
 
 ---
 
@@ -507,7 +507,7 @@ Sau NetDevOps có thể mở rộng:
 - Network Digital Twin.
 - Integration với NMS/IPAM.
 
-Nhóm này có khả năng hội tụ với Nhóm 1:
+Ý tưởng này có khả năng hội tụ với Ý tưởng 01:
 
 ```text
 Resource & Inventory

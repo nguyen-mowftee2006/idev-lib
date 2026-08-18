@@ -1,94 +1,322 @@
-# Nhóm 1: Quản lý tài nguyên & kiểm kê mạng
-## Resource & Inventory Management — IPAM + DNS/DHCP + Topology
+# Ý tưởng 01: Quản lý tài nguyên & kiểm kê mạng
+## Resource & Inventory Management — IPAM + Network Inventory + Basic Monitoring
 
-**Gộp từ:** IPAM tự xây dựng + DNS/DHCP Manager + Network Topology Mapper
+**Định hướng:** IPAM tự xây dựng + Network Inventory + Basic ICMP Monitoring
 
 ---
 
 ## 1. Tổng quan ý tưởng
 
-Xây dựng một hệ thống trung tâm để **quản lý và kiểm kê các tài nguyên đang tồn tại trong mạng nội bộ**.
+Ý tưởng 01 có thể phát triển thành một hệ thống trung tâm giúp người quản trị **biết mạng đang có gì**.
 
-Hệ thống trả lời các câu hỏi chính:
-
-- Mạng hiện có những subnet nào?
-- IP nào đã được cấp, IP nào đang giữ trước, IP nào còn khả dụng?
-- Thiết bị nào đang sử dụng địa chỉ IP nào?
-- Thiết bị có những interface nào?
-- Thiết bị/subnet đang thuộc VLAN nào?
-- DHCP đang cấp lease cho những thiết bị nào?
-- Tên miền nội bộ nào đang trỏ tới thiết bị nào?
-- Các thiết bị đang có quan hệ/kết nối với nhau như thế nào?
-
-Ý tưởng cốt lõi là xây dựng một **nguồn dữ liệu tập trung về hạ tầng mạng (network source of truth ở mức đơn giản)** thay cho việc lưu thông tin rời rạc bằng Excel, file cấu hình hoặc ghi nhớ thủ công.
-
-Đây là nhóm có phạm vi rộng nhất trong các hướng đang cân nhắc, vì kết hợp ba bài toán có liên quan chặt chẽ:
+Tinh thần chính của hướng này là:
 
 ```text
-IPAM
-  +
-DNS / DHCP
-  +
-Network Topology
+KNOW THE NETWORK
 ```
 
-Tuy nhiên, trong **đồ án cơ sở ngành**, trọng tâm không phải làm đầy đủ cả ba phần mà là xây chắc **IPAM + Device Inventory**, sau đó chỉ bổ sung DNS/DHCP/Topology ở mức nhẹ nếu còn thời gian.
+Hệ thống dự kiến trả lời các câu hỏi cơ bản:
+
+- Mạng hiện có những subnet nào?
+- Mỗi subnet có network address, broadcast address và usable range ra sao?
+- IP nào đang được sử dụng?
+- IP nào được reserved?
+- IP nào còn available?
+- IP đang thuộc interface nào?
+- Interface thuộc device nào?
+- Device nào đang được quản lý?
+- Device có trạng thái cơ bản là ONLINE, OFFLINE hay UNKNOWN?
+
+Ý tưởng này không chỉ là một bảng danh sách `Device + IP`, mà là một mô hình tài nguyên mạng có quan hệ rõ ràng giữa subnet, IP, interface, device và VLAN.
 
 ---
 
 ## 2. Vấn đề thực tế cần giải quyết
 
-Trong mạng có từ vài chục thiết bị trở lên, việc quản lý bằng Excel hoặc ghi chép thủ công bắt đầu xuất hiện nhiều vấn đề:
+Trong mạng nội bộ có từ vài chục thiết bị trở lên, cách quản lý bằng Excel, file cấu hình hoặc ghi nhớ thủ công dễ gặp vấn đề:
 
-- Không biết chính xác IP nào đã được cấp.
+- Không biết chính xác IP nào đã được sử dụng.
+- Không biết IP nào còn trống.
 - Dễ cấp trùng IP.
-- Không biết IP đang thuộc thiết bị nào.
-- Không biết một thiết bị có bao nhiêu interface.
-- Khó xác định subnet hoặc VLAN của thiết bị.
-- DHCP lease nằm riêng trong DHCP server.
-- DNS record nằm riêng trong DNS server.
-- Sơ đồ mạng thường được vẽ thủ công và nhanh chóng lỗi thời.
+- Không biết IP đang nằm trên interface nào.
+- Không biết interface thuộc device nào.
+- Khó quản lý nhiều subnet hoặc VLAN.
+- Khi thiết bị mất kết nối phải ping thủ công.
+- Dữ liệu quản lý IP và dữ liệu kiểm kê thiết bị không có quan hệ rõ ràng.
 - Khi troubleshoot phải kiểm tra thông tin từ nhiều nguồn khác nhau.
-- Khi có người mới tiếp quản hệ thống, không có một nguồn dữ liệu trung tâm đáng tin cậy.
 
-Hệ thống hướng tới việc gom các dữ liệu này về một nơi để việc quản trị và tra cứu nhất quán hơn.
+Nếu lựa chọn hướng này, hệ thống có thể đóng vai trò một **network source of truth ở mức cơ bản**, giúp dữ liệu quản trị mạng được tập trung và nhất quán hơn.
 
 ---
 
-## 3. Ứng dụng thực tế
+## 3. Phạm vi định hướng
 
-### 3.1. Doanh nghiệp vừa và nhỏ
+### Core có thể cân nhắc
 
-Có thể sử dụng để quản lý:
+```text
+IPAM
++
+Network Inventory
++
+Basic ICMP Monitoring
+```
+
+Phần core nên tập trung vào:
+
+- Quản lý subnet IPv4/CIDR.
+- Tính network address, broadcast address và usable host range.
+- Kiểm tra subnet overlap.
+- Quản lý reserved IP và assigned IP.
+- Suy ra IP available từ usable range trừ các IP đã bị chiếm dụng.
+- Quản lý device và interface.
+- Gắn IP allocation vào interface.
+- Liên kết subnet với VLAN ở mức cơ bản nếu phù hợp.
+- Theo dõi trạng thái device bằng ICMP ở mức đơn giản.
+
+### Có thể mở rộng nếu phù hợp
+
+Nếu core đã ổn, có thể cân nhắc một số phần nhẹ:
+
+- Đọc DHCP lease để đối chiếu với inventory.
+- Quản lý DNS record nội bộ ở mức đơn giản.
+- Discovery nhỏ bằng ICMP hoặc ARP.
+- Hiển thị topology graph minh họa.
+- Filter hoặc dashboard tốt hơn.
+
+### Không nên đưa vào core ban đầu
+
+Các phần sau nên để dành cho hướng tương lai hoặc đồ án sau:
+
+- SNMP monitoring nâng cao.
+- Traffic history dài hạn.
+- Time-series metrics.
+- Alerting hoàn chỉnh.
+- LLDP/CDP topology đầy đủ.
+- DNS/DHCP management đầy đủ.
+- IPv6, VRF hoặc multi-IP per interface.
+- Configuration management.
+- Network automation, validation và rollback.
+
+---
+
+## 4. Mô hình tài nguyên mạng
+
+Mô hình lõi có thể đi theo quan hệ:
+
+```text
+Device
+  ↓
+Interface
+  ↓
+IP Allocation
+  ↓
+Subnet
+  ↓
+VLAN
+```
+
+Trong đó:
+
+- Một device có thể có nhiều interface.
+- Một interface có thể được gắn một IP chính trong phạm vi cơ sở.
+- IP allocation thuộc một subnet.
+- Subnet có thể thuộc một VLAN.
+- Monitoring nên nhắm tới một assigned IP cụ thể, thay vì hiểu mơ hồ rằng device chỉ có một IP duy nhất.
+
+Cách mô hình này giúp ý tưởng có chiều sâu hơn một ứng dụng CRUD thông thường, vì nó phản ánh cấu trúc mạng thực tế: device không chỉ là một dòng có `ip_address`, mà có interface, allocation, subnet và VLAN liên quan.
+
+---
+
+## 5. IPAM ở mức ý tưởng
+
+Phần IPAM có thể tập trung vào các năng lực:
+
+- Tạo và quản lý subnet IPv4 theo CIDR.
+- Tính network address.
+- Tính broadcast address.
+- Tính usable range.
+- Kiểm tra IP có nằm trong subnet hay không.
+- Phát hiện subnet overlap.
+- Reserve IP cho mục đích giữ trước.
+- Assign IP cho interface.
+- Unreserve hoặc unassign IP khi không còn dùng.
+- Hiển thị IP available mà không cần tạo sẵn toàn bộ danh sách IP trong database.
+
+Một hướng hợp lý là chỉ lưu các IP đã thật sự bị chiếm dụng:
+
+```text
+reserved
+assigned
+```
+
+Còn `available` có thể được suy ra:
+
+```text
+Available IP
+=
+Usable Host Range
+-
+Reserved IP
+-
+Assigned IP
+```
+
+Cách này giúp ý tưởng phù hợp hơn với subnet lớn, vì không cần tạo hàng nghìn hoặc hàng triệu bản ghi chỉ để biểu diễn các IP còn trống.
+
+---
+
+## 6. IP allocation lifecycle
+
+Ý tưởng có thể mô tả vòng đời IP ở mức khái niệm:
+
+```text
+available → reserved
+available → assigned
+reserved  → assigned
+reserved  → available
+assigned  → available
+```
+
+Ý nghĩa:
+
+- `available`: IP còn trống, chưa có allocation được lưu.
+- `reserved`: IP được giữ trước, chưa gắn vào interface.
+- `assigned`: IP đã được gắn vào interface của device.
+
+Điểm cần chú ý là hệ thống phải tránh cấp trùng IP. Việc cấp phát IP cần bảo đảm một địa chỉ không bị gán đồng thời cho nhiều interface, kể cả khi có nhiều thao tác diễn ra gần như cùng lúc.
+
+---
+
+## 7. Basic Network Monitoring
+
+Monitoring trong Ý tưởng 01 chỉ nên là phần hỗ trợ để kiểm tra nhanh trạng thái device đã có trong inventory.
+
+Ở mức core, có thể chỉ dùng:
+
+- ICMP monitoring.
+- ONLINE.
+- OFFLINE.
+- UNKNOWN.
+- Last Check.
+- Last Seen.
+- Background monitoring.
+
+Trạng thái có thể hiểu theo hướng:
+
+- `UNKNOWN`: chưa có đủ dữ liệu hoặc chưa kiểm tra lần nào.
+- `ONLINE`: target phản hồi ICMP thành công.
+- `OFFLINE`: target không phản hồi sau một số lần kiểm tra liên tiếp.
+
+Cần lưu ý rằng `OFFLINE` chỉ có nghĩa target không phản hồi theo phương pháp kiểm tra hiện tại, không nhất thiết khẳng định thiết bị đã tắt nguồn.
+
+---
+
+## 8. Các bài toán kỹ thuật đáng nghiên cứu
+
+Nếu lựa chọn hướng này, phần thú vị nằm ở các bài toán nền tảng:
+
+- **CIDR calculation:** tính đúng network, broadcast và usable range.
+- **Subnet overlap detection:** tránh tạo các subnet chồng lấn trong cùng hệ thống.
+- **Subnet resize validation:** nếu đổi prefix, các IP đã reserved hoặc assigned phải vẫn hợp lệ.
+- **Dynamic IP allocation:** không pre-generate toàn bộ IP pool, chỉ suy ra IP available khi cần.
+- **IP allocation lifecycle:** quản lý rõ available, reserved và assigned.
+- **Duplicate allocation prevention:** tránh cấp trùng IP khi nhiều thao tác xảy ra gần nhau.
+- **Database integrity:** dữ liệu device, interface, subnet, VLAN và monitoring target không bị mồ côi hoặc mâu thuẫn.
+- **Concurrent allocation:** cần có lớp bảo vệ cuối cùng để hai request không cùng cấp thành công một IP.
+- **Background monitoring:** kiểm tra trạng thái device mà không làm nghẽn thao tác người dùng.
+- **Monitoring consistency:** khi IP bị unassign hoặc target thay đổi, trạng thái monitoring phải được xử lý hợp lý.
+
+Các điểm này đủ để Ý tưởng 01 có chiều sâu kỹ thuật, nhưng chưa cần mô tả SQL schema, API endpoint hoặc thuật toán worker chi tiết.
+
+---
+
+## 9. Kiến trúc dự kiến
+
+Kiến trúc có thể giữ ở mức đơn giản:
+
+```text
+Web UI
+   ↓
+Backend API
+   ↓
+Business Logic
+   ↓
+Database
+
+      +
+
+Background Monitoring
+   ↓
+Network Devices
+```
+
+Có thể triển khai theo hướng modular monolith để dễ phát triển, kiểm thử và demo.
+
+Công nghệ nếu lựa chọn hướng này có thể dự kiến như sau, nhưng chưa phải quyết định bắt buộc:
+
+| Thành phần | Dự kiến |
+| ---------- | ------- |
+| Backend | Go |
+| Frontend | React |
+| Database | PostgreSQL |
+| API | REST |
+| Monitoring | ICMP |
+| Môi trường | Linux / VM / Homelab |
+
+---
+
+## 10. Demo có thể thực hiện
+
+Một demo cơ sở có thể đi theo luồng:
+
+1. Đăng nhập Administrator.
+2. Tạo subnet `192.168.10.0/24`.
+3. Hệ thống hiển thị network, broadcast và usable range.
+4. Reserve một IP.
+5. Tạo device.
+6. Tạo interface cho device.
+7. Assign một IP vào interface.
+8. Thử assign trùng IP để chứng minh validation.
+9. Hiển thị số IP còn available.
+10. Bật ICMP monitoring cho assigned IP.
+11. Tắt một VM hoặc target trong lab để thấy trạng thái OFFLINE.
+12. Bật lại target để thấy trạng thái ONLINE và cập nhật Last Seen.
+13. Search hoặc filter subnet/device/IP.
+
+Nếu còn thời gian, demo có thể thêm discovery nhỏ hoặc đối chiếu DHCP lease, nhưng không nên để phần mở rộng lấn át core.
+
+---
+
+## 11. Ứng dụng thực tế
+
+### Doanh nghiệp vừa và nhỏ
+
+Có thể dùng để kiểm kê:
 
 - Subnet.
 - VLAN.
-- Server.
 - Router.
 - Switch.
 - Access Point.
+- Server.
 - PC.
 - Printer.
 - Camera.
-- Thiết bị IoT.
 - IP tĩnh.
-- DHCP lease.
-- DNS record nội bộ.
 
-### 3.2. Trường học / phòng Lab
+### Trường học / phòng lab
 
-Có thể quản lý:
+Có thể dùng để quản lý:
 
 - Phòng máy.
-- Phòng Lab.
 - Thiết bị mạng.
 - Server nội bộ.
 - IP cấp cho từng khu vực.
-- VLAN theo phòng hoặc nhóm người dùng.
+- VLAN theo phòng hoặc vai trò.
 
-### 3.3. Homelab
+### Homelab
 
-Có thể quản lý:
+Có thể dùng để quản lý:
 
 - NAS.
 - Raspberry Pi.
@@ -97,397 +325,77 @@ Có thể quản lý:
 - Home Server.
 - Router.
 - Access Point.
-- Các dịch vụ nội bộ.
-
-### 3.4. Troubleshooting
-
-Khi xảy ra sự cố, Administrator có thể tra cứu nhanh:
-
-```text
-Device
-  ↓
-Interface
-  ↓
-IP
-  ↓
-Subnet
-  ↓
-VLAN
-```
-
-thay vì phải dò từng thiết bị hoặc từng file cấu hình riêng lẻ.
+- Dịch vụ nội bộ.
 
 ---
 
-## 4. Giá trị chính của đề tài
+## 12. Rủi ro và cách giới hạn scope
 
-Nhóm này không chỉ là một ứng dụng CRUD.
+Ý tưởng 01 có khả năng mở rộng rất lớn nên rủi ro chính là scope creep.
 
-Phần có giá trị kỹ thuật nằm ở việc mô hình hóa đúng quan hệ giữa các tài nguyên mạng:
+Các phần dễ làm scope phình to:
+
+- DNS/DHCP integration.
+- Topology discovery.
+- SNMP.
+- Metrics history.
+- Alerting.
+- Network automation.
+
+Cách giảm rủi ro:
+
+- Làm chắc IPAM trước.
+- Làm rõ quan hệ Device → Interface → IP Allocation.
+- Monitoring chỉ giữ ở mức ICMP cơ bản.
+- DNS/DHCP/Topology chỉ xem là extension hoặc proof of concept.
+- Không claim triển khai production enterprise; chỉ kiểm thử trong lab, VM hoặc homelab.
+
+---
+
+## 13. Khả năng phát triển dài hạn
+
+Nếu Ý tưởng 01 được lựa chọn và tiếp tục mở rộng, roadmap dài hạn có thể đi theo hướng:
 
 ```text
-Device
-   |
-   v
-Interface
-   |
-   v
-IP Allocation
-   |
-   v
-Subnet
-   |
-   v
-VLAN
+KNOW
+  ↓
+OBSERVE
+  ↓
+CONTROL
 ```
 
-Từ mô hình này có thể phát triển tiếp:
+Tương ứng:
 
 ```text
-IPAM
-  ↓
-DHCP / DNS
-  ↓
-Discovery
-  ↓
-Topology
-  ↓
-Monitoring
-  ↓
+IPAM & Inventory
+        ↓
 Network Management System
+        ↓
+Network Management & Automation Platform
 ```
 
-Do đó đây là hướng phù hợp nếu muốn xây một project có vòng đời dài và có thể nâng cấp qua nhiều học kỳ.
+Đây chỉ là khả năng phát triển dài hạn, không phải kế hoạch bắt buộc của đồ án cơ sở.
+
+Các hướng tương lai có thể gồm:
+
+- SNMP.
+- Discovery.
+- Metrics.
+- History.
+- Alerting.
+- DNS/DHCP integration.
+- Topology.
+- IPv6.
+- Configuration Management.
+- Network Automation.
+- Validation.
+- Rollback.
 
 ---
 
-## 5. Kiến trúc sơ bộ
+## 14. Giá trị đối với đồ án và portfolio
 
-```text
-┌──────────────────────────────┐
-│           Frontend           │
-│ Dashboard / Device / IPAM    │
-│ DNS/DHCP / Topology          │
-└──────────────┬───────────────┘
-               │ REST API
-               ▼
-┌──────────────────────────────┐
-│            Backend           │
-│                              │
-│  ├── Inventory Module        │
-│  ├── IPAM Module             │
-│  ├── DNS/DHCP Module         │
-│  ├── Discovery Module        │
-│  ├── Topology Module         │
-│  └── Basic Monitoring        │
-└──────────────┬───────────────┘
-               │
-               ▼
-        ┌──────────────┐
-        │ PostgreSQL   │
-        └──────────────┘
-```
-
-Trong đồ án cơ sở không cần tách Microservice. Có thể triển khai theo kiểu **Modular Monolith** để dễ phát triển và kiểm thử.
-
----
-
-## 6. Data model sơ bộ
-
-Phần lõi dự kiến:
-
-```text
-Device
-  └── Interface
-        └── IP Allocation
-              └── Subnet
-                    └── VLAN
-```
-
-Các module mở rộng có thể liên kết vào lõi:
-
-```text
-DHCP Lease
-   └── IP / MAC / Device
-
-DNS Record
-   └── IP / Device
-
-Topology Link
-   └── Device / Interface
-```
-
-Điểm quan trọng là IPAM và Inventory phải được thiết kế đủ rõ ngay từ đầu để các module sau chỉ cần **tham chiếu hoặc bổ sung dữ liệu**, không phải tạo một hệ dữ liệu hoàn toàn khác.
-
----
-
-## 7. Các module chức năng có thể có
-
-### 7.1. IPAM
-
-- CRUD Subnet.
-- CIDR validation.
-- Subnet overlap validation.
-- Dynamic IP Pool.
-- Reserve / Unreserve IP.
-- Assign / Unassign IP.
-- Tìm kiếm IP.
-- Kiểm tra IP đã cấp hoặc còn trống.
-- Quản lý VLAN cơ bản.
-
-### 7.2. Device Inventory
-
-- CRUD Device.
-- CRUD Interface.
-- Gắn IP vào Interface.
-- Device Type.
-- Location.
-- MAC Address.
-- Ghi chú.
-- Search / Filter.
-
-### 7.3. DNS Manager
-
-Ở mức cơ bản:
-
-- Xem DNS record nội bộ.
-- Thêm/sửa/xóa record đơn giản.
-- Liên kết hostname với IP đã có trong IPAM.
-
-Không nhất thiết phải triển khai DNS server riêng trong đồ án cơ sở.
-
-### 7.4. DHCP Manager
-
-Ở mức nhẹ:
-
-- Đọc DHCP lease.
-- Hiển thị IP/MAC/hostname.
-- Đối chiếu lease với Device Inventory.
-- Phát hiện lease chưa có trong Inventory.
-
-Giai đoạn cơ sở có thể chỉ đọc dữ liệu thay vì trực tiếp điều khiển DHCP server.
-
-### 7.5. Topology
-
-Ở mức ý tưởng:
-
-- Phát hiện thiết bị active.
-- Ghi nhận quan hệ thiết bị cơ bản.
-- Vẽ graph đơn giản.
-
-Độ chính xác của Topology phụ thuộc phương pháp Discovery, vì vậy phần này không nên là Core bắt buộc của đồ án cơ sở.
-
-### 7.6. Basic Monitoring
-
-- ICMP Ping.
-- Online / Offline / Unknown.
-- Last Check.
-- Last Seen.
-
-Monitoring chỉ hỗ trợ kiểm tra nhanh tình trạng Inventory, chưa phải NMS hoàn chỉnh.
-
----
-
-## 8. Phạm vi đề xuất cho đồ án cơ sở ngành
-
-### Nhóm A — Core bắt buộc
-
-```text
-IPAM
-+
-Device Inventory
-+
-Basic ICMP Monitoring
-+
-Dashboard
-```
-
-Bao gồm:
-
-- CRUD Subnet.
-- Overlap validation.
-- Dynamic IP Pool.
-- Reserve / Assign / Unassign IP.
-- CRUD Device.
-- CRUD Interface.
-- Quan hệ Device → Interface → IP.
-- VLAN cơ bản nếu cần.
-- ICMP Monitoring.
-- Search / Filter.
-- Authentication Administrator.
-- Dashboard.
-
-### Nhóm B — Mở rộng nhẹ nếu còn thời gian
-
-Chọn một hoặc hai phần:
-
-- Đọc DHCP lease.
-- CRUD DNS record nội bộ đơn giản.
-- ARP/ICMP discovery nhỏ.
-- Topology graph đơn giản.
-
-### Nhóm C — Không làm trong đồ án cơ sở
-
-- Full DHCP server management.
-- SNMP polling nâng cao.
-- LLDP/CDP topology đầy đủ.
-- Traffic history.
-- Auto-discovery liên tục.
-- Alerting hoàn chỉnh.
-- RBAC.
-- IPv6/VRF phức tạp.
-
----
-
-## 9. Kịch bản Demo cơ sở ngành
-
-Ví dụ mạng Lab:
-
-```text
-192.168.10.0/24
-        |
-        +-- Router-R1
-        +-- Server-01
-        +-- PC-01
-        +-- PC-02
-        +-- IoT-01
-```
-
-Demo có thể gồm:
-
-1. Login Administrator.
-2. Tạo Subnet.
-3. Hệ thống xác định Host Range.
-4. Reserve một IP.
-5. Tạo Device.
-6. Tạo Interface.
-7. Assign IP.
-8. Thử cấp trùng IP để chứng minh Validation.
-9. Hiển thị IP còn khả dụng.
-10. Bật ICMP Monitoring.
-11. Tắt một VM để thấy trạng thái Offline.
-12. Bật lại VM để cập nhật Last Seen.
-13. Nếu có DHCP extension: hiển thị Lease.
-14. Nếu có DNS extension: tạo hostname nội bộ.
-15. Nếu có Topology extension: hiển thị graph đơn giản.
-
----
-
-## 10. Các quyết định cần chốt khi đi sâu
-
-- Backend dùng Go hay Node.js.
-- Cấu trúc Database chính thức.
-- IP Pool lưu động hay pre-generate.
-- Quy tắc Reserve / Assign / Unassign.
-- Quan hệ VLAN – Subnet.
-- DHCP chỉ Read-only hay có quyền ghi cấu hình.
-- DNS sử dụng dịch vụ nào trong Lab.
-- Discovery dùng ICMP, ARP hay SNMP.
-- Topology chỉ mang tính minh họa hay phải phản ánh Layer 2.
-- Monitoring Target gắn theo IP hay Device.
-- Scope nào là Core và scope nào là Bonus.
-
-Các điểm này chưa cần khóa ở giai đoạn ghi ý tưởng, nhưng phải được giải quyết trước khi bắt đầu Implementation.
-
----
-
-## 11. Rủi ro và độ khó
-
-### Độ khó tổng thể
-
-**Trung bình → khá cao** nếu cố làm đủ IPAM + DHCP + DNS + Topology trong cùng một học kỳ.
-
-### Rủi ro chính
-
-- Scope dễ phình lớn.
-- Topology Discovery phức tạp hơn tưởng tượng.
-- DHCP/DNS integration phụ thuộc môi trường Lab.
-- Data model sai từ đầu sẽ ảnh hưởng toàn hệ thống.
-- Dễ biến thành nhiều module nửa hoàn thiện.
-
-### Cách giảm rủi ro
-
-Giữ nguyên nguyên tắc:
-
-> Đồ án cơ sở làm chắc IPAM + Inventory trước. DNS/DHCP/Topology chỉ là extension hoặc proof of concept.
-
----
-
-## 12. Nâng cấp thành đồ án chuyên ngành
-
-Hướng nâng cấp tự nhiên nhất:
-
-# Network Management System (NMS)
-
-Kiến trúc có thể tiến hóa:
-
-```text
-Inventory / IPAM
-       |
-       +-- Discovery
-       |
-       +-- SNMP Monitoring
-       |
-       +-- DNS / DHCP Integration
-       |
-       +-- Topology
-       |
-       +-- Metrics History
-       |
-       +-- Alert
-       |
-       +-- Automation
-```
-
-Các chức năng chuyên ngành có thể gồm:
-
-- SNMP polling.
-- CPU / RAM / Uptime.
-- Interface status.
-- RX/TX traffic.
-- Monitoring history.
-- Time-series metrics.
-- Auto-discovery.
-- Phát hiện thiết bị mới.
-- LLDP/CDP topology.
-- Alert Telegram/Email.
-- DHCP integration sâu hơn.
-- DNS synchronization.
-- Network configuration backup.
-- API phục vụ automation.
-
----
-
-## 13. Hướng phát triển xa hơn
-
-Sau NMS có thể mở rộng thành:
-
-```text
-Network Source of Truth
-       +
-Monitoring
-       +
-Automation
-       ↓
-Network / Infrastructure Platform
-```
-
-Có thể tích hợp:
-
-- Ansible.
-- SSH Automation.
-- Config Backup.
-- Configuration Validation.
-- Git-based Network Configuration.
-- NetDevOps workflow.
-
-Nhóm này có khả năng kết nối trực tiếp với Nhóm 6 trong giai đoạn xa hơn.
-
----
-
-## 14. Giá trị đối với CV / Portfolio
-
-Nhóm này phù hợp với các hướng:
+Ý tưởng này phù hợp với các hướng:
 
 - Network Administrator.
 - System Administrator.
@@ -496,18 +404,15 @@ Nhóm này phù hợp với các hướng:
 - NOC Engineer.
 - NetDevOps ở giai đoạn mở rộng.
 
-Một project hoàn chỉnh có thể chứng minh:
+Một phiên bản hoàn chỉnh có thể chứng minh:
 
 - Hiểu IPv4/CIDR/Subnetting.
 - Hiểu mô hình Device/Interface/IP/VLAN.
-- Biết thiết kế Database.
-- Biết xây REST API.
-- Biết xử lý Background Worker.
-- Biết Monitoring.
-- Biết xây Lab.
-- Có khả năng thiết kế hệ thống mở rộng.
-
-Nếu phát triển tiếp thành NMS và public project trên GitHub thì đây là hướng có tiềm năng portfolio rất tốt.
+- Biết thiết kế dữ liệu có quan hệ.
+- Biết xây REST API và dashboard.
+- Biết xử lý validation và consistency.
+- Biết thiết kế background monitoring.
+- Biết dựng lab nhỏ để demo.
 
 ---
 
@@ -515,12 +420,12 @@ Nếu phát triển tiếp thành NMS và public project trên GitHub thì đây
 
 | Tiêu chí | Đánh giá |
 |---|---|
-| Phù hợp đồ án cơ sở | Cao nếu giới hạn Core |
+| Phù hợp đồ án cơ sở | Cao nếu giới hạn core |
 | Kiến thức Network | Cao |
 | Backend/Database | Cao |
-| Khả năng Demo | Cao |
+| Khả năng demo | Cao |
 | Độ khó | Trung bình – khá cao |
-| Nguy cơ Scope Creep | Cao |
+| Nguy cơ scope creep | Cao |
 | Khả năng nâng chuyên ngành | Rất cao |
 | Giá trị CV Network/Infra | Rất cao |
 | Khả năng phát triển dài hạn | Rất cao |
@@ -529,23 +434,16 @@ Nếu phát triển tiếp thành NMS và public project trên GitHub thì đây
 
 ## 16. Kết luận ý tưởng
 
-Đây là hướng **cân bằng nhất giữa Networking, Backend, Database và Monitoring**.
+Ý tưởng 01 là hướng cân bằng giữa Networking, Backend, Database và Monitoring.
 
-Cấu trúc phát triển hợp lý:
+Nếu lựa chọn hướng này, trọng tâm nên là:
 
 ```text
-Đồ án cơ sở
-IPAM + Inventory + Basic Monitoring
-
-        ↓
-
-Đồ án chuyên ngành
-Full NMS
-
-        ↓
-
-Phát triển xa hơn
-Network Source of Truth + Automation / NetDevOps
+IPAM
++
+Network Inventory
++
+Basic ICMP Monitoring
 ```
 
-Nếu chọn nhóm này, điều quan trọng nhất là **không cố triển khai toàn bộ DNS/DHCP/Topology ở đồ án cơ sở**. IPAM và Inventory phải là nền móng chính; các module còn lại được thêm dần theo tiến độ.
+Điều quan trọng nhất là không cố triển khai toàn bộ DNS/DHCP/Topology ngay từ đầu. IPAM và Inventory nên là nền móng chính; các phần còn lại chỉ nên được thêm dần nếu phạm vi và thời gian cho phép.
